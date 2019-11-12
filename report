@@ -1,0 +1,106 @@
+535 Project 2
+
+I pledge my honor that I have abided by the Stevens Honor Code. 
+Marius Constantin
+Agathe Sadeghi
+Alexa Ray
+
+1
+
+2 Bond Portfolio Management
+Part 1
+Use the pricing equation of a fixed-coupon bond to price each of the above bonds. I recommend
+writing a function that takes yield, coupon, face value, and maturity as its main arguments. The
+resulting prices should correspond to the ones reported above. Hence, you should plot the computed
+prices against the reported ones. This should result in a 45-degree line.
+ 
+
+Part 2
+Prices should reflect investors’ perception of future interest rates. Rather than computing the
+prices using yields as the case in the previous question, in practice, it is the other way around.
+We try to deduce yields from market prices. Hence, given a pricing function, you need to find the
+yield that matches the market price. For each bond, find the implied yield and plot it against the
+corresponding yield reported in the table above. Again, this should result in a 45-degree line. (6
+Points)
+Part 3
+Compute and report the Macaulay duration for each of the 8 US bonds. Ideally, you should report
+this in two 2Å~4 tables, where the first row corresponds to the bond number and the second to the
+Macaulay duration. The first table refers to the data from 2018 and the second to 2019. Given
+both tables, how do they compare? Provide some rationale.
+Part 4
+Using first order Taylor expansion, calculate the change in the Treasury bond prices, if the yield
+curve in the US shifts up by 25 bps. Focus only on the recent bond data to answer this part, i.e. bonds numbered 5, 6, 7, and 8 . To summarize, plot both the original and new prices against
+maturity. How do you justify this observation?
+Part 5
+Assume that the prices in the above table reflect the dollar price of each bond, e.g. the price of
+bond 5 is $100.06. As a portfolio manager, you need to allocate $100,000 between bond 5 and 6
+from the above table. If you believe that the interest rate will increase in the near future, you need
+to limit your portfolio duration to 3 years. As a result, how many units of each bond you need to
+purchase to satisfy this? How would your answer change if you target a duration of 6 years instead?
+Explain why these numbers make sense.
+Part 6
+Consider the details from the previous question. However, in this case, you need
+to allocate $100,000 among the four Treasury bonds numbered 5, 6, 7, and 8. If you are targeting
+a portfolio duration of 6 years, how many units of each bond you need to buy? The position in
+each one of the four bonds should not be zero.
+
+3
+
+4
+
+
+Code
+
+Problem 2 :
+#535 Project 2
+#2 Bond Portfolio Management
+#535 Project 2
+#2 Bond Portfolio Management
+
+
+# 2.1. Use the pricing equation of a fixed-coupon bond to price each of the 
+# above bonds. I recommend writing a function that takes yield, coupon,
+# face value, and maturity as its main arguments.
+
+bond.price <- function(yield, coupon, face.value, maturity) {
+  
+  V.coupons <- 0
+  times <-  seq(2*maturity) # coupon paid every 6 months
+ # times = c(0, times) # add initial coupon
+  for (i in times) {
+  V.coupons <- V.coupons + coupon  / ( (1 + yield)^(i * 0.5) ) # coupon paid every 6 months
+  }
+  
+  V.face.value <- face.value / ((1 + yield)^maturity)
+  print( V.face.value )
+  print( V.coupons )
+  res <- V.coupons + V.face.value
+  return (res)
+}
+
+yields <- c(0.0288, 0.0307, 0.0323, 0.034, 0.0147, 0.014,0.0156,0.0206)
+coupons <- c(2.75,  2.88, 2.88,  3, 1.5, 1.5, 1.63,  2.25)
+mats <-  c(2,  5,10, 30, 2, 5, 10,30)
+
+row = 8
+computed.prices = bond.price(yield = yields[row],
+           coupon = coupons[row], 
+           face.value  = 100, 
+           maturity = mats[row])
+computed.prices
+
+computed.prices = c(105.0974,
+                    112.4954,
+                    121.7193,
+                    149.366,
+                    103.0153,
+                    107.7249,
+                    115.7444,
+                    154.7113)
+given.prices = c(99.74, 99.11,97, 92.47, 100.06, 100.5, 100.55,104.28)
+
+plot(given.prices, computed.prices)
+
+# 2.2 Taylor Expansion
+
+# 2.5 No optimization, satisfy budget equation
